@@ -15,7 +15,7 @@ export default function Dashboard() {
     trafficRemaining: 57.6,
     expires: '2026-07-21',
     status: 'Active',
-    subLink: 'https://sub.vpny.net/api/v1/client/subscribe?token=e1a8f9c73e920d3f820c78a0d9e'
+    subLink: 'https://sub.vpny.net/api/v1/client/subscribe?token=YOUR_DECRYPTED_SUBSCRIBE_TOKEN'
   };
 
   const pct = Math.round((sub.trafficRemaining / sub.trafficTotal) * 100);

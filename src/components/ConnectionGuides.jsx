@@ -12,7 +12,7 @@ const GUIDES = {
       'Click the Connect circle button in Hiddify to start browsing.',
       'Ensure "System Proxy" is enabled in settings to route all traffic.'
     ],
-    code: `hiddify-cli.exe --profile "https://sub.vpny.net/api/v1/client/subscribe?token=e1a8f9c7..." --connect`
+    code: `hiddify-cli.exe --profile "https://sub.vpny.net/api/v1/client/subscribe?token=YOUR_TOKEN_HERE" --connect`
   },
   ios: {
     title: 'Apple iOS (iPhone/iPad)',
@@ -24,7 +24,7 @@ const GUIDES = {
       'Tap "Update All Subscriptions" to fetch active configurations.',
       'Navigate to the Home tab, select a low-ping server, and toggle the connection switch at the top.'
     ],
-    code: `foxray://import?url=https%3A%2F%2Fsub.vpny.net%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3De1a8f9c7...`
+    code: `foxray://import?url=https%3A%2F%2Fsub.vpny.net%2Fapi%2Fv1%2Fclient%2Fsubscribe%3Ftoken%3DCACHE_YOUR_TOKEN_HERE`
   },
   android: {
     title: 'Android Devices',
@@ -36,7 +36,7 @@ const GUIDES = {
       'Open sidebar again, tap "Update Subscription" to pull active nodes.',
       'Choose a server node and tap the floating circular connect button at bottom right.'
     ],
-    code: `v2rayng://add-subscription?url=https://sub.vpny.net/api/v1/client/subscribe?token=e1a8f9c7...`
+    code: `v2rayng://add-subscription?url=https://sub.vpny.net/api/v1/client/subscribe?token=YOUR_TOKEN_HERE`
   },
   router: {
     title: 'Routers & PassWall',
@@ -51,7 +51,7 @@ const GUIDES = {
     code: `# OpenWrt CLI Setup
 uci add passwall subscription
 uci set passwall.@subscription[-1].name='VPNy'
-uci set passwall.@subscription[-1].url='https://sub.vpny.net/api/v1/client/subscribe?token=e1a8f9c7...'
+uci set passwall.@subscription[-1].url='https://sub.vpny.net/api/v1/client/subscribe?token=YOUR_TOKEN_HERE'
 uci commit passwall`
   }
 };
