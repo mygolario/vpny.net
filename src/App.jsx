@@ -1,100 +1,107 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import ProductConfigurator from './components/ProductConfigurator';
-import Dashboard from './components/Dashboard';
+import Features from './components/Features';
+import Plans from './components/Plans';
 import ConnectionGuides from './components/ConnectionGuides';
 import PersianNotices from './components/PersianNotices';
 import Footer from './components/Footer';
-import { X, ShoppingBag, ShieldCheck, ArrowRight, UserPlus, CreditCard } from 'lucide-react';
+import Dashboard from './components/Dashboard';
+import { ShoppingBag, X, CreditCard, ShieldCheck, ArrowRight } from 'lucide-react';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home'); // 'home' | 'dashboard'
+  const [activeSection, setActiveSection] = useState('home');
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
-  const [checkoutStep, setCheckoutStep] = useState('cart'); // 'cart' | 'checkout' | 'success'
+  const [checkoutStep, setCheckoutStep] = useState('cart');
 
-  const addToCart = (item) => {
-    // Generate a unique ID for this cart item
-    const newItem = { ...item, id: Date.now() };
-    setCart([...cart, newItem]);
+  // Scroll reveal observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+          }
+        });
+      },
+      { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    const elements = document.querySelectorAll('.reveal');
+    elements.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, [activeSection]);
+
+  const addToCart = useCallback((item) => {
+    setCart(prev => [...prev, { ...item, id: Date.now() }]);
     setCartOpen(true);
     setCheckoutStep('cart');
-  };
+  }, []);
 
-  const removeFromCart = (id) => {
-    setCart(cart.filter(item => item.id !== id));
-  };
+  const removeFromCart = useCallback((id) => {
+    setCart(prev => prev.filter(item => item.id !== id));
+  }, []);
 
   const cartTotal = cart.reduce((acc, item) => acc + item.price, 0).toFixed(2);
 
   const handleCheckout = () => {
     setCheckoutStep('success');
-    // Simulate registering user and logging in
     setUserLoggedIn(true);
     setTimeout(() => {
       setCart([]);
       setCartOpen(false);
       setActiveSection('dashboard');
       setCheckoutStep('cart');
-    }, 2000);
+    }, 2200);
   };
 
   return (
     <>
-      {/* Background Orbs */}
-      <div className="bg-glow-container">
-        <div className="bg-glow-orb-1"></div>
-        <div className="bg-glow-orb-2"></div>
-      </div>
-
-      <Navbar 
-        activeSection={activeSection} 
-        setActiveSection={setActiveSection} 
+      <Navbar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
         cartCount={cart.length}
         toggleCart={() => setCartOpen(!cartOpen)}
         userLoggedIn={userLoggedIn}
         setUserLoggedIn={setUserLoggedIn}
       />
 
-      {/* Cart & Checkout Drawer */}
+      {/* ── Cart & Checkout Drawer ── */}
       {cartOpen && (
         <div className="drawer-overlay" onClick={() => setCartOpen(false)}>
-          <div className="drawer" onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '16px' }}>
-              <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', fontSize: '1.2rem' }}>
-                <ShoppingBag size={20} style={{ color: 'var(--accent-purple)' }} />
-                {checkoutStep === 'cart' ? 'Shopping Cart' : checkoutStep === 'checkout' ? 'Crypto/Payment' : 'Success!'}
+          <div className="drawer" onClick={e => e.stopPropagation()}>
+            <div className="drawer__header">
+              <h3 className="drawer__title">
+                <ShoppingBag size={18} className="drawer__title-icon" />
+                {checkoutStep === 'cart' ? 'Shopping Cart' : checkoutStep === 'checkout' ? 'Payment' : 'Success'}
               </h3>
               <button className="icon-btn" onClick={() => setCartOpen(false)}>
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
 
+            {/* Cart view */}
             {checkoutStep === 'cart' && (
               <>
-                <div className="cart-items">
+                <div className="drawer__body">
                   {cart.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--text-muted)' }}>
-                      Your cart is empty. Add configurations below.
+                    <div className="drawer__empty">
+                      Your cart is empty.<br />Configure a plan below to get started.
                     </div>
                   ) : (
                     cart.map(item => (
-                      <div className="cart-item" key={item.id}>
+                      <div className="drawer__item" key={item.id}>
                         <div>
-                          <h4 style={{ color: '#fff', fontSize: '0.95rem', fontWeight: '700' }}>{item.product}</h4>
-                          <p style={{ color: 'var(--text-secondary)', fontSize: '0.8rem', marginTop: '2px' }}>
-                            {item.country} ({item.city}) • {item.duration} • {item.traffic}
-                          </p>
+                          <div className="drawer__item-name">{item.product}</div>
+                          <div className="drawer__item-details">
+                            {item.country}{item.city && item.city !== 'Country-Level' ? ` (${item.city})` : ''} · {item.duration} · {item.traffic}
+                          </div>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <span style={{ fontWeight: '700', color: 'var(--accent-cyan)' }}>${item.price.toFixed(2)}</span>
-                          <button 
-                            className="icon-btn" 
-                            onClick={() => removeFromCart(item.id)}
-                            style={{ padding: '4px', color: 'var(--accent-orange)' }}
-                          >
+                        <div className="drawer__item-right">
+                          <span className="drawer__item-price">${item.price.toFixed(2)}</span>
+                          <button className="drawer__item-remove" onClick={() => removeFromCart(item.id)}>
                             <X size={14} />
                           </button>
                         </div>
@@ -103,16 +110,16 @@ export default function App() {
                   )}
                 </div>
 
-                <div style={{ borderTop: '1px solid var(--border-color)', paddingTop: '20px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', fontWeight: '700' }}>
-                    <span style={{ color: 'var(--text-secondary)' }}>Total:</span>
-                    <span style={{ fontSize: '1.3rem', color: '#fff' }}>${cartTotal}</span>
+                <div className="drawer__footer">
+                  <div className="drawer__total">
+                    <span className="drawer__total-label">Total</span>
+                    <span className="drawer__total-amount">${cartTotal}</span>
                   </div>
-                  <button 
-                    className="btn btn-primary" 
+                  <button
+                    className="btn btn--primary btn--lg"
+                    style={{ width: '100%' }}
                     onClick={() => setCheckoutStep('checkout')}
                     disabled={cart.length === 0}
-                    style={{ width: '100%', padding: '14px 0' }}
                   >
                     Proceed to Payment <ArrowRight size={16} />
                   </button>
@@ -120,52 +127,52 @@ export default function App() {
               </>
             )}
 
+            {/* Checkout view */}
             {checkoutStep === 'checkout' && (
               <>
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '24px' }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <CreditCard size={40} style={{ color: 'var(--accent-cyan)', marginBottom: '12px' }} />
-                    <h4 style={{ color: '#fff', fontSize: '1.1rem' }}>Secure Payment Gateway</h4>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '6px' }}>
-                      Choose your payment option below. VPNy supports anonymous crypto checkouts.
+                <div className="drawer__checkout">
+                  <div className="drawer__checkout-header">
+                    <CreditCard size={36} className="drawer__checkout-icon" />
+                    <h4 className="drawer__checkout-title">Secure Payment</h4>
+                    <p className="drawer__checkout-desc">
+                      Choose your payment method. VPNy supports anonymous crypto checkouts.
                     </p>
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    <button className="btn btn-secondary" style={{ justifyContent: 'space-between', padding: '16px' }}>
-                      <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        🪙 Cryptocurrencies (USDT, TRX, BTC)
-                      </span>
-                      <span style={{ color: 'var(--accent-green)', fontSize: '0.75rem' }}>10% Disc.</span>
+                  <div className="drawer__payment-options">
+                    <button className="drawer__payment-btn">
+                      <span className="drawer__payment-btn-label">🪙 Crypto (USDT, TRX, BTC)</span>
+                      <span className="drawer__payment-btn-note drawer__payment-btn-note--green">10% Off</span>
                     </button>
-                    <button className="btn btn-secondary" style={{ justifyContent: 'space-between', padding: '16px' }}>
-                      <span>💳 Local Payment Methods</span>
-                      <span style={{ color: 'var(--text-muted)', fontSize: '0.75rem' }}>Shetab Card</span>
+                    <button className="drawer__payment-btn">
+                      <span className="drawer__payment-btn-label">💳 Local Payment (Shetab)</span>
+                      <span className="drawer__payment-btn-note drawer__payment-btn-note--muted">IRR</span>
                     </button>
                   </div>
 
-                  <div style={{ background: 'rgba(255,255,255,0.01)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '12px', fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.4' }}>
-                    🔒 By proceeding, you agree to our 24-hour refund SLA. Your connection configs will be automatically provisioned in your portal.
+                  <div className="drawer__legal">
+                    🔒 By proceeding, you agree to our 24-hour refund SLA. Configs are provisioned automatically.
                   </div>
                 </div>
 
-                <div style={{ display: 'flex', gap: '12px' }}>
-                  <button className="btn btn-secondary" onClick={() => setCheckoutStep('cart')} style={{ flex: 1 }}>
+                <div className="drawer__checkout-actions">
+                  <button className="btn btn--outline" style={{ flex: 1 }} onClick={() => setCheckoutStep('cart')}>
                     Back
                   </button>
-                  <button className="btn btn-primary" onClick={handleCheckout} style={{ flex: 2 }}>
-                    Simulate Payment
+                  <button className="btn btn--primary" style={{ flex: 2 }} onClick={handleCheckout}>
+                    Complete Purchase
                   </button>
                 </div>
               </>
             )}
 
+            {/* Success view */}
             {checkoutStep === 'success' && (
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: '16px' }}>
-                <ShieldCheck size={60} style={{ color: 'var(--accent-green)', animation: 'pulse 1s infinite' }} />
-                <h4 style={{ color: '#fff', fontSize: '1.25rem', fontWeight: '800' }}>Payment Confirmed!</h4>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '280px' }}>
-                  Your gateway server is being provisioned. Redirecting to your Client Portal...
+              <div className="drawer__success">
+                <ShieldCheck size={56} className="drawer__success-icon" />
+                <h4 className="drawer__success-title">Payment Confirmed</h4>
+                <p className="drawer__success-desc">
+                  Your gateway is being provisioned. Redirecting to Client Portal…
                 </p>
               </div>
             )}
@@ -173,14 +180,15 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Pages Content routing */}
+      {/* ── Main Content ── */}
       {activeSection === 'home' ? (
-        <>
+        <main>
           <Hero />
-          <ProductConfigurator addToCart={addToCart} />
+          <Features />
+          <Plans addToCart={addToCart} />
           <ConnectionGuides />
           <PersianNotices />
-        </>
+        </main>
       ) : (
         <Dashboard />
       )}

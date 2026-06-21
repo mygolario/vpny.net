@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown, AlertTriangle, ShieldCheck, Heart, Info, RotateCcw } from 'lucide-react';
 
 const NOTICES = [
@@ -42,56 +42,55 @@ export default function PersianNotices() {
   };
 
   return (
-    <section id="faq-section" className="rtl-section" style={{ padding: '80px 0', borderTop: '1px solid var(--border-color)' }}>
+    <section id="faq-section" className="persian">
       <div className="container">
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <div className="badge badge-orange" style={{ marginBottom: '16px' }}>قوانین و نکات مهم خرید</div>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '16px', fontFamily: 'var(--font-fa)' }}>توافق‌نامه سطح خدمات (SLA)</h2>
-          <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto', fontSize: '0.95rem', fontFamily: 'var(--font-fa)' }}>
+        {/* Section header */}
+        <div className="section-header reveal">
+          <span className="section-label" style={{ fontFamily: 'var(--font-fa)' }}>قوانین و نکات مهم خرید</span>
+          <h2 className="section-title" style={{ fontFamily: 'var(--font-fa)' }}>توافق‌نامه سطح خدمات (SLA)</h2>
+          <p className="section-subtitle" style={{ fontFamily: 'var(--font-fa)' }}>
             خواهشمند است پیش از ثبت هرگونه سفارش خرید، ضوابط، قوانین و گارانتی بازگشت وجه را با دقت مطالعه فرمایید.
           </p>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.8fr', gap: '40px', alignItems: 'start' }}>
+        <div className="persian__grid reveal">
           {/* Official channels summary */}
-          <div className="glass-panel" style={{ padding: '30px' }}>
-            <h3 style={{ fontSize: '1.25rem', color: '#fff', marginBottom: '20px', fontFamily: 'var(--font-fa)' }}>
-              کانال‌های اطلاع‌رسانی رسمی
-            </h3>
-            <p style={{ fontSize: '0.95rem', color: 'var(--text-secondary)', lineHeight: '1.7', marginBottom: '24px', fontFamily: 'var(--font-fa)' }}>
+          <div className="card persian__channels">
+            <h3 className="persian__channels-title">کانال‌های اطلاع‌رسانی رسمی</h3>
+            <p className="persian__channels-desc">
               کلیه‌ی اطلاعیه‌ها، قطعی‌ها، به‌روزرسانی‌های نرم‌افزاری و کدهای تخفیف دوره‌ای صرفاً از طریق مراجع رسمی زیر اعلام می‌گردد. بررسی دوره‌ای این منابع بر عهده کاربر است.
             </p>
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                <span style={{ fontWeight: '600', color: '#fff' }}>داشبورد کاربری</span>
-                <span style={{ fontSize: '0.85rem', color: 'var(--accent-purple)' }}>بخش اطلاعیه‌ها</span>
+            <ul className="persian__channels-list">
+              <li className="persian__channel-item">
+                <span className="persian__channel-name">داشبورد کاربری</span>
+                <span className="persian__channel-link">بخش اطلاعیه‌ها</span>
               </li>
-              <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                <span style={{ fontWeight: '600', color: '#fff' }}>کانال تلگرام رسمی</span>
-                <a href="https://t.me/VPNynet" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-cyan)', textDecoration: 'none' }}>@VPNynet</a>
+              <li className="persian__channel-item">
+                <span className="persian__channel-name">کانال تلگرام رسمی</span>
+                <a href="https://t.me/VPNynet" target="_blank" rel="noopener noreferrer" className="persian__channel-link">@VPNynet</a>
               </li>
-              <li style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '12px 16px', borderRadius: '8px', border: '1px solid var(--border-color)' }}>
-                <span style={{ fontWeight: '600', color: '#fff' }}>اکانت توییتر (X)</span>
-                <a href="https://x.com/VPNynet" target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.85rem', color: 'var(--accent-cyan)', textDecoration: 'none' }}>@VPNynet</a>
+              <li className="persian__channel-item">
+                <span className="persian__channel-name">اکانت توییتر (X)</span>
+                <a href="https://x.com/VPNynet" target="_blank" rel="noopener noreferrer" className="persian__channel-link">@VPNynet</a>
               </li>
             </ul>
           </div>
 
           {/* Accordion list */}
-          <div className="glass-panel" style={{ padding: '30px' }}>
+          <div className="card persian__accordion">
             {NOTICES.map((notice, idx) => {
               const ItemIcon = notice.icon;
               return (
-                <div key={idx} className={`accordion-item ${openIndex === idx ? 'open' : ''}`}>
-                  <div className="accordion-header" onClick={() => toggleAccordion(idx)}>
-                    <div className="accordion-title">
-                      <ItemIcon size={18} style={{ color: openIndex === idx ? 'var(--accent-purple)' : 'var(--text-secondary)' }} />
-                      <span style={{ fontFamily: 'var(--font-fa)' }}>{notice.title}</span>
+                <div key={idx} className={`persian__accordion-item ${openIndex === idx ? 'persian__accordion-item--open' : ''}`}>
+                  <div className="persian__accordion-header" onClick={() => toggleAccordion(idx)}>
+                    <div className="persian__accordion-title">
+                      <ItemIcon size={18} className="persian__accordion-title-icon" />
+                      <span>{notice.title}</span>
                     </div>
-                    <ChevronDown size={18} className="accordion-icon" />
+                    <ChevronDown size={18} className="persian__accordion-chevron" />
                   </div>
-                  <div className="accordion-content">
-                    <p style={{ fontFamily: 'var(--font-fa)', paddingRight: '30px' }}>{notice.content}</p>
+                  <div className="persian__accordion-content">
+                    <p className="persian__accordion-text">{notice.content}</p>
                   </div>
                 </div>
               );
