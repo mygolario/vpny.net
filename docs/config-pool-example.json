@@ -1,0 +1,35 @@
+{
+  "version": "1.0",
+  "configs": [
+    {
+      "external_id": "DE-FRA-VLESS-001",
+      "protocol": "vless",
+      "product_tier": "professional",
+      "country": "Germany",
+      "city": "Frankfurt",
+      "traffic_gb": 100,
+      "duration_days": 90,
+      "server_ip": "185.190.140.42",
+      "server_label": "DE-FRA-01",
+      "subscription_url": "https://sub.vpny.net/sub/REPLACE_WITH_TOKEN",
+      "config_uri": "vless://UUID@185.190.140.42:443?encryption=none&security=reality&sni=example.com",
+      "sui_client_id": "1",
+      "notes": "Example config — replace with real s-ui client"
+    },
+    {
+      "external_id": "DE-FRA-HY2-001",
+      "protocol": "hysteria2",
+      "product_tier": "professional",
+      "country": "Germany",
+      "city": "Frankfurt",
+      "traffic_gb": 50,
+      "duration_days": 30,
+      "server_ip": "185.190.140.42",
+      "server_label": "DE-FRA-HY2-01",
+      "subscription_url": "https://sub.vpny.net/sub/REPLACE_HY2_TOKEN",
+      "config_uri": "hy2://password@185.190.140.42:443?sni=example.com",
+      "sui_client_id": "2",
+      "notes": ""
+    }
+  ]
+}

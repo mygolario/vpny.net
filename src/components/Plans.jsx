@@ -195,12 +195,17 @@ export default function Plans({ addToCart }) {
   const handleAddToCart = () => {
     addToCart({
       product: productData.name,
+      product_tier: selectedProduct,
+      product_id: productData.id,
       country,
       city: city || 'Country-Level',
       duration: `${duration} ${duration === 1 ? 'Month' : 'Months'}`,
+      duration_months: duration,
+      duration_days: duration * 30,
       traffic: `${traffic} GB`,
+      traffic_gb: traffic,
       dns: selectedProduct === 'creator' ? dns : undefined,
-      price
+      price,
     });
   };
 

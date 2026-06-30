@@ -1,0 +1,3 @@
+external_id,protocol,product_tier,country,city,traffic_gb,duration_days,server_ip,server_label,subscription_url,config_uri,sui_client_id,notes
+DE-FRA-VLESS-001,vless,professional,Germany,Frankfurt,100,90,185.190.140.42,DE-FRA-01,https://sub.vpny.net/sub/TOKEN,vless://UUID@185.190.140.42:443?encryption=none&security=reality&sni=example.com,1,Example
+CA-GEN-VLESS-001,vless,general,Canada,,50,30,185.190.140.43,CA-01,https://sub.vpny.net/sub/TOKEN2,vless://UUID@185.190.140.43:443?encryption=none&security=reality&sni=example.com,2,Country-level
