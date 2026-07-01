@@ -1,5 +1,4 @@
-[project]
-id = "vpny-net"
+project_id = "zhfxomofodwifoxiqfjx"
 
 [api]
 enabled = true

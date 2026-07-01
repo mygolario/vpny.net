@@ -1,12 +1,13 @@
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
-import { fulfillOrder } from '../_shared/fulfillment.ts';
+import { fulfillOrder } from './_shared/fulfillment.ts';
 import {
   corsHeaders,
   createServiceClient,
+  getCustomerEmail,
   getEdgeSecret,
   sendResendEmail,
   writeAudit,
-} from '../_shared/utils.ts';
+} from './_shared/utils.ts';
 
 async function verifyOxaPayHmac(rawBody: string, hmacHeader: string | null): Promise<boolean> {
   const apiKey = await getEdgeSecret('OXAPAY_MERCHANT_API_KEY', createServiceClient());
@@ -116,14 +117,14 @@ serve(async (req) => {
       amount: payload.amount,
     });
 
-    const customerEmail = (order as { profiles?: { email?: string } }).profiles?.email;
+    const customerEmail = await getCustomerEmail(supabase, order.user_id, (order as { profiles?: unknown }).profiles);
     if (customerEmail) {
       await sendResendEmail({
         to: customerEmail,
         subject: 'VPNy.net payment confirmed',
         html: `<p>Your payment has been confirmed. Your configuration is being provisioned now.</p>
                <p style="color:#666;font-size:14px">پرداخت شما تأیید شد. پیکربندی در حال آماده‌سازی است.</p>`,
-      }).catch((err) => console.error('Payment email failed', err));
+      }, supabase).catch((err) => console.error('Payment email failed', err));
     }
 
     await fulfillOrder(order.id, null, trackId);

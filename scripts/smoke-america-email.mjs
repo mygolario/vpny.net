@@ -2,7 +2,8 @@
  * VPNy America 6-month email E2E smoke test.
  * Seeds test pool → create-order → simulated paid webhook → DB assertions → Resend email check.
  *
- * Requires scripts/supabase-secrets.local.env with OXAPAY_MERCHANT_API_KEY and RESEND_API_KEY.
+ * Requires scripts/supabase-secrets.local.env with SUPABASE_ANON_KEY, SMOKE_TEST_EMAIL,
+ * SMOKE_TEST_PASSWORD, OXAPAY_MERCHANT_API_KEY, and RESEND_API_KEY.
  */
 import { readFileSync, writeFileSync } from 'fs';
 import { fileURLToPath } from 'url';

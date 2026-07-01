@@ -103,6 +103,21 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleResendConfigEmail = async (orderId) => {
+    setActionLoading(`email-${orderId}`);
+    try {
+      const result = await invokeFunction('admin-retry-fulfill', { orderId, resendEmail: true });
+      if (!result?.sent) {
+        setError(result?.reason ?? 'Config email was not sent');
+      }
+      await loadData();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
   const handleRetireConfig = async (configId) => {
     setActionLoading(configId);
     try {
@@ -190,6 +205,7 @@ export default function AdminDashboard() {
                           <td>${Number(order.total_amount).toFixed(2)}</td>
                           <td><code>{order.oxapay_track_id ?? '—'}</code></td>
                           <td>
+                            <div className="admin-actions">
                             {(order.status === 'awaiting_inventory' || order.status === 'paid' || order.status === 'provisioning') && (
                               <button
                                 className="btn btn--outline btn--sm"
@@ -199,6 +215,16 @@ export default function AdminDashboard() {
                                 {actionLoading === order.id ? <Loader2 size={14} className="spin" /> : 'Retry Fulfill'}
                               </button>
                             )}
+                            {order.status === 'active' && (
+                              <button
+                                className="btn btn--outline btn--sm"
+                                disabled={actionLoading === `email-${order.id}`}
+                                onClick={() => handleResendConfigEmail(order.id)}
+                              >
+                                {actionLoading === `email-${order.id}` ? <Loader2 size={14} className="spin" /> : 'Resend Email'}
+                              </button>
+                            )}
+                            </div>
                           </td>
                         </tr>
                       ))}

@@ -1,11 +1,11 @@
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
-import { fulfillOrder } from '../_shared/fulfillment.ts';
+import { fulfillOrder, sendConfigDeliveryEmailsForOrder } from './_shared/fulfillment.ts';
 import {
   corsHeaders,
   createServiceClient,
   createUserClient,
   requireAdmin,
-} from '../_shared/utils.ts';
+} from './_shared/utils.ts';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -27,9 +27,16 @@ serve(async (req) => {
     const serviceClient = createServiceClient();
     await requireAdmin(serviceClient, user.id);
 
-    const { orderId } = await req.json();
+    const { orderId, resendEmail } = await req.json();
     if (!orderId) {
       return new Response(JSON.stringify({ error: 'orderId required' }), { status: 400, headers: corsHeaders });
+    }
+
+    if (resendEmail) {
+      const result = await sendConfigDeliveryEmailsForOrder(orderId, user.id);
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
     }
 
     const result = await fulfillOrder(orderId, user.id);

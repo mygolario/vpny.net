@@ -7,7 +7,7 @@ import {
   getEdgeSecret,
   sendResendEmail,
   writeAudit,
-} from '../_shared/utils.ts';
+} from './utils.ts';
 
 type OrderItem = {
   id: string;

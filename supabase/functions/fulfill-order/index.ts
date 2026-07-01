@@ -1,6 +1,6 @@
 import { serve } from 'https://deno.land/std@0.224.0/http/server.ts';
-import { fulfillOrder } from '../_shared/fulfillment.ts';
-import { corsHeaders } from '../_shared/utils.ts';
+import { fulfillOrder } from './_shared/fulfillment.ts';
+import { corsHeaders } from './_shared/utils.ts';
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {

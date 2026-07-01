@@ -1,0 +1,97 @@
+{
+  "startedAt": "2026-07-01T05:38:15.346Z",
+  "finishedAt": "2026-07-01T05:38:25.947Z",
+  "fulfillmentOrder": {
+    "orderId": "66ce38ad-ba25-4af0-8f69-3cd04ee95974",
+    "trackId": "185649369",
+    "paymentUrl": "https://pay.oxapay.com/10663061/185649369",
+    "totalAmount": 1.4,
+    "status": "active",
+    "subscriptionId": "a1675414-f2fb-45a6-8158-1c1490b948f7",
+    "configPoolId": "53fa0837-516c-4b15-b3aa-32fb5d72eb9c",
+    "subscriptionUrl": "https://sub.vpny.net/sub/REPLACE_HY2_TOKEN"
+  },
+  "awaitingInventoryOrder": {
+    "orderId": "82583a22-d1c7-444d-b11f-48be3f01db08",
+    "trackId": "193163894",
+    "status": "awaiting_inventory"
+  },
+  "steps": [
+    {
+      "name": "Auth login",
+      "pass": true,
+      "email": "kavehtkts@gmail.com",
+      "at": "2026-07-01T05:38:16.282Z"
+    },
+    {
+      "name": "create-order (HY2 fulfillment cart)",
+      "pass": true,
+      "orderId": "66ce38ad-ba25-4af0-8f69-3cd04ee95974",
+      "trackId": "185649369",
+      "paymentUrl": "https://pay.oxapay.com/10663061/185649369",
+      "totalAmount": 1.4,
+      "httpStatus": 200,
+      "at": "2026-07-01T05:38:17.423Z"
+    },
+    {
+      "name": "Real OxaPay invoice URL",
+      "pass": true,
+      "paymentUrl": "https://pay.oxapay.com/10663061/185649369",
+      "at": "2026-07-01T05:38:17.423Z"
+    },
+    {
+      "name": "Simulated OxaPay paid webhook",
+      "pass": true,
+      "httpStatus": 200,
+      "body": "ok",
+      "at": "2026-07-01T05:38:19.951Z"
+    },
+    {
+      "name": "Order status active after webhook",
+      "pass": true,
+      "status": "active",
+      "at": "2026-07-01T05:38:20.135Z"
+    },
+    {
+      "name": "Order item fulfilled",
+      "pass": true,
+      "fulfillment_status": "fulfilled",
+      "at": "2026-07-01T05:38:20.515Z"
+    },
+    {
+      "name": "Subscription created",
+      "pass": true,
+      "subscriptionId": "a1675414-f2fb-45a6-8158-1c1490b948f7",
+      "status": "active",
+      "subscription_url": "https://sub.vpny.net/sub/REPLACE_HY2_TOKEN",
+      "at": "2026-07-01T05:38:20.515Z"
+    },
+    {
+      "name": "Pool config assigned (DE-FRA-HY2-001)",
+      "pass": true,
+      "config_pool_id": "53fa0837-516c-4b15-b3aa-32fb5d72eb9c",
+      "expected_external_id": "DE-FRA-HY2-001",
+      "at": "2026-07-01T05:38:20.515Z"
+    },
+    {
+      "name": "create-order (awaiting inventory cart)",
+      "pass": true,
+      "orderId": "82583a22-d1c7-444d-b11f-48be3f01db08",
+      "trackId": "193163894",
+      "at": "2026-07-01T05:38:22.677Z"
+    },
+    {
+      "name": "Awaiting-inventory webhook",
+      "pass": true,
+      "httpStatus": 200,
+      "at": "2026-07-01T05:38:23.812Z"
+    },
+    {
+      "name": "Order awaiting_inventory",
+      "pass": true,
+      "status": "awaiting_inventory",
+      "at": "2026-07-01T05:38:25.947Z"
+    }
+  ],
+  "allPassed": true
+}
