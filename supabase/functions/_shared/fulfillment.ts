@@ -71,18 +71,21 @@ export async function sendConfigDeliveryEmailsForOrder(
     ? new Date(first.expires_at).toLocaleDateString()
     : new Date().toLocaleDateString();
 
+  const { html, text } = buildConfigDeliveryEmail({
+    productName: first.product_name,
+    country: first.country ?? '',
+    city: first.city ?? null,
+    subscriptionUrl: first.subscription_url,
+    configUri,
+    expiresAt,
+    portalUrl,
+  });
+
   const emailResult = await sendResendEmail({
     to: customerEmail,
     subject: 'Your VPNy.net configuration is ready',
-    html: buildConfigDeliveryEmail({
-      productName: first.product_name,
-      country: first.country ?? '',
-      city: first.city ?? null,
-      subscriptionUrl: first.subscription_url,
-      configUri,
-      expiresAt,
-      portalUrl,
-    }),
+    html,
+    text,
   }, supabase);
 
   if ('skipped' in emailResult && emailResult.skipped) {
