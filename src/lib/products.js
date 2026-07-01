@@ -1,6 +1,6 @@
 /** Shared product catalog enums for frontend + pool validation */
 
-export const PRODUCT_TIERS = ['general', 'professional', 'ultimate', 'creator'];
+export const PRODUCT_TIERS = ['general', 'professional', 'ultimate', 'creator', 'america'];
 
 export const PROTOCOLS = ['vless', 'hysteria2'];
 
@@ -55,6 +55,14 @@ export const PRODUCTS = {
     countries: ['Canada', 'Germany', 'Netherlands', 'Switzerland', 'United States'],
     durations: [3, 6],
     trafficOptions: [500, 1000, 2500, 5000],
+  },
+  america: {
+    id: 'vpny-america-test',
+    name: 'VPNy America',
+    countries: ['United States'],
+    durations: [6],
+    trafficOptions: [50],
+    protocol: 'hysteria2',
   },
 };
 

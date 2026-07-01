@@ -8,7 +8,7 @@ import {
   writeAudit,
 } from '../_shared/utils.ts';
 
-const PRODUCT_TIERS = ['general', 'professional', 'ultimate', 'creator'];
+const PRODUCT_TIERS = ['general', 'professional', 'ultimate', 'creator', 'america'];
 const PROTOCOLS = ['vless', 'hysteria2'];
 
 function normalizeCity(city: string | null | undefined) {

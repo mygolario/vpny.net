@@ -24,6 +24,41 @@ export function createUserClient(authHeader: string): SupabaseClient {
   );
 }
 
+const edgeSecretCache = new Map<string, string>();
+
+function parseSettingValue(value: unknown): string | null {
+  if (typeof value === 'string') return value;
+  if (value === null || value === undefined) return null;
+  return String(value);
+}
+
+export async function getEdgeSecret(
+  name: string,
+  supabase?: SupabaseClient,
+): Promise<string | undefined> {
+  const fromEnv = Deno.env.get(name);
+  if (fromEnv) return fromEnv;
+
+  if (edgeSecretCache.has(name)) {
+    return edgeSecretCache.get(name);
+  }
+
+  const client = supabase ?? createServiceClient();
+  const { data } = await client
+    .from('app_settings')
+    .select('value')
+    .eq('key', name)
+    .maybeSingle();
+
+  const parsed = parseSettingValue(data?.value);
+  if (parsed) {
+    edgeSecretCache.set(name, parsed);
+    return parsed;
+  }
+
+  return undefined;
+}
+
 export async function requireAdmin(supabase: SupabaseClient, userId: string) {
   const { data: profile, error } = await supabase
     .from('profiles')
@@ -39,7 +74,7 @@ export async function requireAdmin(supabase: SupabaseClient, userId: string) {
 
 export async function encryptSecret(value: string | null | undefined): Promise<string | null> {
   if (!value) return null;
-  const key = Deno.env.get('ENCRYPTION_KEY');
+  const key = await getEdgeSecret('ENCRYPTION_KEY');
   if (!key) return value;
 
   const encoder = new TextEncoder();
@@ -64,7 +99,7 @@ export async function encryptSecret(value: string | null | undefined): Promise<s
 
 export async function decryptSecret(value: string | null | undefined): Promise<string | null> {
   if (!value) return null;
-  const key = Deno.env.get('ENCRYPTION_KEY');
+  const key = await getEdgeSecret('ENCRYPTION_KEY');
   if (!key) return value;
 
   try {
@@ -108,8 +143,8 @@ export async function sendResendEmail(payload: {
   subject: string;
   html: string;
 }) {
-  const apiKey = Deno.env.get('RESEND_API_KEY');
-  const from = Deno.env.get('RESEND_FROM_EMAIL') ?? 'support@vpny.net';
+  const apiKey = await getEdgeSecret('RESEND_API_KEY');
+  const from = (await getEdgeSecret('RESEND_FROM_EMAIL')) ?? 'support@vpny.net';
   if (!apiKey) {
     console.warn('RESEND_API_KEY not set, skipping email');
     return { skipped: true };
@@ -209,7 +244,7 @@ export async function checkLowStockAndAlert(
 
   const { count } = await query;
 
-  const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL') ?? 'support@vpny.net';
+  const adminEmail = (await getEdgeSecret('ADMIN_ALERT_EMAIL', supabase)) ?? 'support@vpny.net';
   if ((count ?? 0) <= threshold) {
     await sendResendEmail({
       to: adminEmail,

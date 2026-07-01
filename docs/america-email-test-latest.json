@@ -1,0 +1,103 @@
+{
+  "startedAt": "2026-07-01T08:25:03.979Z",
+  "finishedAt": "2026-07-01T08:25:15.431Z",
+  "order": {
+    "orderId": "323a4bc7-b292-47f6-bd4a-248e0e001fa7",
+    "trackId": "118278436",
+    "totalAmount": 5.1,
+    "paymentUrl": "https://pay.oxapay.com/10663061/118278436",
+    "status": "active",
+    "subscriptionId": "24cc4d59-09f6-4624-8942-a8f109f17d1e",
+    "subscriptionUrl": "https://sub.vpny.net/sub/US-AMERICA-002-TOKEN",
+    "configPoolExternalId": "US-AMERICA-001",
+    "configEmail": {
+      "found": true,
+      "emailId": "1c45f3cc-750c-4e0a-be85-2f86df433d2d",
+      "subject": "Your VPNy.net configuration is ready",
+      "status": "delivered"
+    },
+    "poolAvailableAfter": 8
+  },
+  "steps": [
+    {
+      "name": "Auth login",
+      "pass": true,
+      "email": "kavehtkts@gmail.com",
+      "at": "2026-07-01T08:25:05.084Z"
+    },
+    {
+      "name": "Pool available before test (america/US/180d/50GB/hy2)",
+      "pass": true,
+      "availableCount": 9,
+      "message": "9 available",
+      "at": "2026-07-01T08:25:05.591Z"
+    },
+    {
+      "name": "Pool available after import",
+      "pass": true,
+      "availableCount": 9,
+      "at": "2026-07-01T08:25:06.022Z"
+    },
+    {
+      "name": "create-order (VPNy America 6 months)",
+      "pass": true,
+      "orderId": "323a4bc7-b292-47f6-bd4a-248e0e001fa7",
+      "trackId": "118278436",
+      "totalAmount": 5.1,
+      "paymentUrl": "https://pay.oxapay.com/10663061/118278436",
+      "httpStatus": 200,
+      "at": "2026-07-01T08:25:07.811Z"
+    },
+    {
+      "name": "Simulated OxaPay paid webhook",
+      "pass": true,
+      "httpStatus": 200,
+      "body": "ok",
+      "at": "2026-07-01T08:25:10.555Z"
+    },
+    {
+      "name": "Order status active",
+      "pass": true,
+      "status": "active",
+      "at": "2026-07-01T08:25:10.719Z"
+    },
+    {
+      "name": "Order item fulfilled",
+      "pass": true,
+      "fulfillment_status": "fulfilled",
+      "product_name": "VPNy America",
+      "at": "2026-07-01T08:25:11.422Z"
+    },
+    {
+      "name": "Subscription created with subscription_url",
+      "pass": true,
+      "subscriptionId": "24cc4d59-09f6-4624-8942-a8f109f17d1e",
+      "subscription_url": "https://sub.vpny.net/sub/US-AMERICA-002-TOKEN",
+      "at": "2026-07-01T08:25:11.422Z"
+    },
+    {
+      "name": "US-AMERICA pool config assigned",
+      "pass": true,
+      "config_pool_id": "5af688fc-63af-41f1-8363-a6ba0f1f3951",
+      "external_id": "US-AMERICA-001",
+      "at": "2026-07-01T08:25:11.422Z"
+    },
+    {
+      "name": "Pool inventory decremented",
+      "pass": true,
+      "availableBeforeOrder": 9,
+      "availableAfterOrder": 8,
+      "at": "2026-07-01T08:25:11.423Z"
+    },
+    {
+      "name": "Config delivery email (Resend)",
+      "pass": true,
+      "found": true,
+      "emailId": "1c45f3cc-750c-4e0a-be85-2f86df433d2d",
+      "subject": "Your VPNy.net configuration is ready",
+      "status": "delivered",
+      "at": "2026-07-01T08:25:15.431Z"
+    }
+  ],
+  "allPassed": true
+}

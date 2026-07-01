@@ -4,6 +4,7 @@ import {
   corsHeaders,
   createServiceClient,
   decryptSecret,
+  getEdgeSecret,
   sendResendEmail,
   writeAudit,
 } from '../_shared/utils.ts';
@@ -65,7 +66,7 @@ export async function fulfillOrder(
   let fulfilledCount = 0;
   let hasAwaitingInventory = false;
   let hasAwaitingManual = false;
-  const portalUrl = `${Deno.env.get('APP_URL') ?? 'https://vpny.net'}/?section=portal`;
+  const portalUrl = `${(await getEdgeSecret('APP_URL', supabase)) ?? 'https://vpny.net'}/?section=portal`;
   const deliveredConfigs: Array<{ productName: string; subscriptionUrl: string | null; configUri: string | null }> = [];
 
   for (const item of items as OrderItem[]) {
@@ -192,7 +193,7 @@ export async function fulfillOrder(
   }
 
   if (hasAwaitingInventory) {
-    const adminEmail = Deno.env.get('ADMIN_ALERT_EMAIL') ?? 'support@vpny.net';
+    const adminEmail = (await getEdgeSecret('ADMIN_ALERT_EMAIL', supabase)) ?? 'support@vpny.net';
     await sendResendEmail({
       to: adminEmail,
       subject: `[VPNy] Order awaiting inventory: ${orderId}`,

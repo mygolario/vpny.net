@@ -3,12 +3,13 @@ import { fulfillOrder } from '../_shared/fulfillment.ts';
 import {
   corsHeaders,
   createServiceClient,
+  getEdgeSecret,
   sendResendEmail,
   writeAudit,
 } from '../_shared/utils.ts';
 
 async function verifyOxaPayHmac(rawBody: string, hmacHeader: string | null): Promise<boolean> {
-  const apiKey = Deno.env.get('OXAPAY_MERCHANT_API_KEY');
+  const apiKey = await getEdgeSecret('OXAPAY_MERCHANT_API_KEY', createServiceClient());
   if (!apiKey || !hmacHeader) return false;
 
   const key = await crypto.subtle.importKey(

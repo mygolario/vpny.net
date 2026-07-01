@@ -3,6 +3,7 @@ import {
   corsHeaders,
   createServiceClient,
   createUserClient,
+  getEdgeSecret,
   writeAudit,
 } from '../_shared/utils.ts';
 
@@ -74,8 +75,8 @@ serve(async (req) => {
     const { error: itemsError } = await serviceClient.from('order_items').insert(orderItems);
     if (itemsError) throw itemsError;
 
-    const oxapayKey = Deno.env.get('OXAPAY_MERCHANT_API_KEY');
-    const appUrl = Deno.env.get('APP_URL') ?? 'http://localhost:5173';
+    const oxapayKey = await getEdgeSecret('OXAPAY_MERCHANT_API_KEY', serviceClient);
+    const appUrl = (await getEdgeSecret('APP_URL', serviceClient)) ?? 'http://localhost:5173';
     const supabaseUrl = Deno.env.get('SUPABASE_URL') ?? '';
     const callbackUrl = `${supabaseUrl}/functions/v1/oxapay-webhook`;
 

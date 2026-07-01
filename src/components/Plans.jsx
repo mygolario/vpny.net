@@ -120,7 +120,26 @@ const PRODUCTS = {
       'Individuals wishing to resell accounts or manage their family connectivity'
     ],
     excludes: null
-  }
+  },
+  america: {
+    id: 'vpny-america-test',
+    name: 'VPNy America',
+    tagline: 'Temporary test product — United States · 6 months · 50 GB',
+    countries: ['United States'],
+    durations: [6],
+    trafficOptions: [50],
+    specs: [
+      { name: 'United States country-level endpoint', checked: true },
+      { name: '6-month duration (180 days)', checked: true },
+      { name: '50 GB monthly traffic', checked: true },
+      { name: 'Hysteria2 protocol', checked: true },
+      { name: 'Automated config email delivery test', checked: true },
+    ],
+    bestFor: [
+      'End-to-end email delivery validation for VPNy America orders',
+    ],
+    excludes: 'This tier is for internal testing only and will be removed after validation.',
+  },
 };
 
 export default function Plans({ addToCart }) {
@@ -159,6 +178,11 @@ export default function Plans({ addToCart }) {
       setDuration(3);
       setTraffic(500);
       setDns('Public DNS');
+    } else if (prodKey === 'america') {
+      setCountry('United States');
+      setCity('');
+      setDuration(6);
+      setTraffic(50);
     }
   };
 
@@ -190,6 +214,8 @@ export default function Plans({ addToCart }) {
     else rate = 6.8;
     const monthlyRate = rate * (duration === 6 ? 0.85 : 1.0) + (dns === 'Private DNS' ? 0.5 : 0);
     price = parseFloat((monthlyRate * duration).toFixed(2));
+  } else if (selectedProduct === 'america') {
+    price = 5.1;
   }
 
   const handleAddToCart = () => {
@@ -204,6 +230,7 @@ export default function Plans({ addToCart }) {
       duration_days: duration * 30,
       traffic: `${traffic} GB`,
       traffic_gb: traffic,
+      protocol: selectedProduct === 'america' ? 'hysteria2' : undefined,
       dns: selectedProduct === 'creator' ? dns : undefined,
       price,
     });
